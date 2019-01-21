@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <!-- Load Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
-    <script src="http://www.brython.info/src/brython_dist.js"></script>
+    <script src="https://www.brython.info/src/brython_dist.js"></script>
 
   </head>
   <!-- Start Brython -->
   <body onload="brython()">
     <!-- Load Sketch -->
-    <script type="text/python" src="./setup.py"></script>
+    <script type="text/python" src="./setup.py" onload="removeLoadingElement()"></script>
   </body>
 </html>
