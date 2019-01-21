@@ -1,3 +1,7 @@
+# Created by Luca Damasco
+# Adapted from a demo by Alexandre Villares
+# Wrapping some basic p5.js functionalityself.
+
 from browser import document, window, alert
 
 import sketch as s
