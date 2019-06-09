@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
+    <script src="./pyodide_dev.js"></script>
+  </head>
+  <body>
+    <h1>Py5.js Demo</h1>
+    <div style="width:60%; height: 300px; float: left;" id="editor">
+def setup():
+  createCanvas(300, 300)
+  background(100)
+
+def draw():
+  rect(mouseX - 25, mouseY - 25, 50, 50)</div>
+    <div style="width: 40%; height: 300px; float: left; overflow: hidden; border: 1px solid black;" id="p5Container">
+    </div>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/python");
+    </script>
+
+    <script>
+      languagePluginLoader.then(() => {
+          pyodide.runPython(`
+            import io, code, sys
+            from js import pyodide, p5, window, document
+
+            document.getElementById('run-button').style.display = 'block';
+          `)
+
+          
+      });
+      
+let wrapper = `
+def updateVariables(p):
+  global mouseX, mouseY 
+  mouseX = p.mouseX
+  mouseY = p.mouseY
+
+def wrappedDraw(p):
+  try:
+      updateVariables(p)
+      draw()
+  except:
+      updateVariables(p)
+
+def sketch(p):
+  global createCanvas, background, rect, fill
+  p.setup = setup
+  p.draw = lambda: wrappedDraw(p)
+  createCanvas = p.createCanvas
+  background = p.background
+  rect = p.rect
+  fill = p.fill
+
+
+window._p5jsCanvas = p5.new(sketch, "p5Container")
+
+      `
+
+      function runCode() {
+        let sketchCode = editor.getValue();
+
+        let code = sketchCode + '\n' + wrapper; 
+
+        if (window._p5jsCanvas) {
+          window._p5jsCanvas.canvas.remove();
+        }
+
+        console.log(code);
+
+        pyodide.runPython(code);
+      }
+    </script>
+
+    <button id="run-button" style="display: none;" onClick="runCode()">Run Code</button>
+  </body>
+</html>
+
+
+<!-- languagePluginLoader.then(() => {
+  pyodide.runPython(`
+    import io, code, sys
+    from js import pyodide, p5
+
+    def setup():
+      createCanvas(400, 400)
+      background(100)
+      
+    def draw():
+      rect(mouseX - 25, mouseY - 25, 50, 50)
+
+    def updateVariables(p):
+      global mouseX, mouseY 
+      mouseX = p.mouseX
+      mouseY = p.mouseY
+
+    def wrappedDraw(p):
+      try:
+          updateVariables(p)
+          draw()
+      except:
+          updateVariables(p)
+
+    def sketch(p):
+      global createCanvas, background, rect
+      p.setup = setup
+      p.draw = lambda: wrappedDraw(p)
+      createCanvas = p.createCanvas
+      background = p.background
+      rect = p.rect
+
+    p5.new(sketch)
+  `)
+}); -->
