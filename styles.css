@@ -1,3 +1,8 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #EAEAEA;
+}
 .editor-container {
     width: 100%;
     height: 100%; 
@@ -15,10 +20,10 @@
     flex-direction: column;
 }
 
-.p5-canvas-container {
+#p5Container {
     width: 400px;
-    height: 370px;
-    min-height: 370px;
+    height: 390x;
+    min-height: 390px;
     overflow: auto;
     border: 4px solid black;
 }
@@ -32,10 +37,4 @@
 #run-button {
     height: 30px;
     display: none;
-}
-
-#info-box {
-    position: absolute;
-    top: 500px;
-    float: none;
 }

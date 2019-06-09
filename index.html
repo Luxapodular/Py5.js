@@ -9,7 +9,7 @@
   </head>
   <body>
     <div className="header">
-      <h1>Py5.js Demo</h1>
+      <h1>Py5.js Demo by @lucapodular</h1>
       <button id="run-button" onClick="runCode()">Run Code</button>
     </div>
     <div className="editor-containter">
@@ -29,7 +29,7 @@
     </script>
     </div>
     <div id="info-box">
-      <h3>This Exciting (but untested) Demo Includes</h3>
+      <h3>This Exciting (but untested) Demo Includes:</h3>
       <h4>Structure</h4>
       <p>setup(), draw()</p>
       <h4>2D Primitives</h4>
@@ -44,6 +44,8 @@
       <p>mouseMoved(), mouseDragged(), mousePressed(), mouseReleased(), mouseClicked(), doubleClicked(), mouseWheel()</p>
       <h4>Key Events</h4>
       <p>keyPressed(), keyReleased(), keyIsDown()</p>
+      <h4>Random</h4>
+      <p>random()</p>
     </div>
     
 
@@ -86,7 +88,7 @@ def __setup(p):
     setup()
   except:
     updateVariables(p)
-    
+
 def __draw(p):
   try:
     updateVariables(p)
@@ -162,7 +164,7 @@ def __keyIsDown(p):
 
 
 def sketch(p):
-  global createCanvas, background, fill, arc, ellipse, circle, line, point, quad, rect, square, triangle
+  global createCanvas, background, fill, arc, ellipse, circle, line, point, quad, rect, square, triangle, random
   p.setup = lambda: __setup(p)
   p.draw = lambda: __draw(p)
 
@@ -199,6 +201,9 @@ def sketch(p):
   rect = p.rect
   square = p.square
   triangle = p.triangle
+
+  #random
+  random = p.random
 
 # create the p5 sketch and send to the p5Container div
 window._p5jsCanvas = p5.new(sketch, "p5Container")
