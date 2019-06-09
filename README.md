@@ -20,4 +20,4 @@ https://groups.google.com/forum/#!msg/brython/gAAtzh7WtJU/NUrotGwcAAAJ
 1. Clone this repository
 2. Enter the directory Py5.js. Directory
 3. Serve the directory. I use the 'serve' project on npm. The python simple server seems to fail here.
-4. Open your browser to localhost:<port>/console.html. Where <port> is the port you've served to. 
+4. Open your browser to localhost:<port>. Where <port> is the port you've served to. 
