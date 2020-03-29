@@ -1,0 +1,19 @@
+    <div id="info-box">
+      <h3>This Exciting (but untested) Demo Includes:</h3>
+      <h4>Structure</h4>
+      <p>setup(), draw(), createCanvas()</p>
+      <h4>2D Primitives</h4>
+      <p>arc(), ellipse(), circle(), line(), point(), quad(), rect(), square(), triangle()</p>
+      <h4>Color</h4>
+      <p>background(), fill()</p>
+      <h4>Mouse Variables</h4>
+      <p>mouseX, mouseY, pmouseX, pmouseY, winMouseX, winMouseY, pwinMouseX, pwinMouseY, mouseButton, mouseIsPressed</p>
+      <h4>Key Variables</h4>
+      <p>keyIsPressed, key, keyCode</p>
+      <h4>Mouse Events</h4>
+      <p>mouseMoved(), mouseDragged(), mousePressed(), mouseReleased(), mouseClicked(), doubleClicked(), mouseWheel()</p>
+      <h4>Key Events</h4>
+      <p>keyPressed(), keyReleased(), keyIsDown()</p>
+      <h4>Random</h4>
+      <p>random()</p>
+    </div>
