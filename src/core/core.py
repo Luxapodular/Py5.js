@@ -1,7 +1,11 @@
+import builtins
+
 def updateVariables(p):
-  global mouseX, mouseY, pMouseX, pMouseY, winMouseX, winMouseY, pwinMouseX, pwinMouseY, mouseButton, mouseIsPressed
+  global mouseX, mouseY, pMouseX, pMouseY, winMouseX, winMouseY, pwinMouseX, pwinMouseY, mouseButton, mouseIsPressed, keyIsPressed, key, keyCode
 
   # Mouse Variables
+#  movedX = p.movedX
+#  movedY = p.movedY
   mouseX = p.mouseX
   mouseY = p.mouseY
   pmouseX = p.pmouseX
@@ -19,6 +23,13 @@ def updateVariables(p):
   keyCode = p.keyCode
 
 # Our wrapped draw loop and events. Updates all p5 variables and calls draw if defined.
+def __preload(p):
+  try:
+    updateVariables(p)
+    preload()
+  except: 
+    updateVariables(p)
+    
 def __setup(p):
   try:
     updateVariables(p)
@@ -98,13 +109,88 @@ def __keyIsDown(p):
     keyIsDown()
   except:
     pass
+  
+# Events - Acceleration  
+def __deviceMoved(p):
+  try:
+    deviceMoved()
+  except:
+    pass
+  
+def __deviceTurned(p):
+  try:
+    deviceTurned()
+  except:
+    pass
+  
+def __deviceShaken(p):
+  try:
+    deviceShaken()
+  except:
+    pass
+  
+# Events - Touch
+def __touchStarted(p):
+  try:
+    touchStarted()
+  except: 
+    pass
+  
+def __touchMoved(p):
+  try:
+    touchMoved()
+  except:
+    pass
+  
+def touchEnded(p):
+  try:
+    touchEnded()
+  except:
+    pass
+  
+# Window
+def __windowResized(p):
+  try:
+    windowResized()
+  except:
+    pass
 
+  
+  
+__primitives2D = ['arc', 'ellipse', 'circle', 'line', 'point', 'quad', 'rect', 'square', 'triangle']
+__attributes = ['ellipseMode', 'noSmooth', 'rectMode', 'smooth', 'strokeCap', 'strokeJoin', 'strokeWeight']
+__curves = ['bezier', 'bezierDetail', 'bezierPoint', 'bezierTangent', 'curve', 'curveDetail', 'curveTightness', 'curvePoint', 'curveTangent']
+__vertex = ['beginContour', 'beginShape', 'bezierVertex', 'curveVertex', 'endContour', 'endShape', 'quadraticVertex', 'vertex']
+__primitives3D = ['plane', 'box', 'sphere', 'cylinder', 'cone', 'ellipsoid', 'torus']
+__models3D = ['loadModel', 'model']
+__constants = ['HALF_PI', 'PI', 'QUARTER_PI', 'TAU', 'TWO_PI', 'DEGREES', 'RADIANS']
+__environment = ['print', 'frameCount', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
+__structure = ['remove', 'noLoop', 'loop', 'push', 'pop', 'redraw']
+__rendering = ['createCanvas', 'resizeCanvas', 'noCanvas', 'createGraphics', 'blendMode', 'setAttributes']
+__transform = ['applyMatrix', 'resetMatrix', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'shearX', 'shearY', 'translate']
+__dictionary = ['createStringDictionary', 'createNumberDictionary']
+__acceleration = ['deviceOrientation', 'accelerationX', 'accelerationY', 'accelerationZ', 'pAccelerationX', 'pAccelerationY', 'pAccelerationZ', 'rotationX', 'rotationY', 'rotationZ', 'pRotationX', 'pRotationY', 'pRotationY', 'pRotationZ', 'turnAxis', 'setMoveThreshold', 'setShakeThreshold']
+__touch = ['touches']
 
+__allAttributes = __primitives2D + __attributes + __curves + __vertex + __primitives3D + __models3D + __constants + __environment + __structure + __rendering + __transform  + __acceleration
+
+def bindVariables(p):
+  for variable in __allAttributes:
+    setattr(builtins, variable, getattr(p, variable))
+  
 def sketch(p):
   global createCanvas, background, fill, arc, ellipse, circle, line, point, quad, rect, square, triangle, random
+  
+  # Setup Function
   p.setup = lambda: __setup(p)
   p.draw = lambda: __draw(p)
-
+  p.preload = lambda: __preload(p)
+  
+  # Acceleration
+  p.deviceMoved = lambda e: __deviceMoved(p)
+  p.deviceTurned = lambda e: __deviceTurned(p)
+  p.deviceShaken = lambda e: __deviceShaken(p)
+  
   # Mouse Events
   p.mouseMoved = lambda e: __mouseMoved(p)
   p.mouseDragged = lambda e: __mouseDragged(p)
@@ -119,6 +205,14 @@ def sketch(p):
   p.keyReleased = lambda e: __keyReleased(p)
   p.keyTyped = lambda e: __keyTyped(p)
   p.keyIsDown = lambda e: __keyIsDown(p)
+  
+  # Touch Events
+  p.touchStarted = lambda e: __touchStarted(p)
+  p.touchMoved = lambda e: __touchMoved(p)
+  p.touchEnded = lambda e: __touchEnded(p)
+  
+  # Window
+  p.windowResized = lambda e: __windowResized(p)
 
 
   #Canvas
@@ -128,16 +222,7 @@ def sketch(p):
   background = p.background
   fill = p.fill
 
-  # 2D Primitives
-  arc = p.arc
-  ellipse = p.ellipse
-  circle = p.circle
-  line = p.line
-  point = p.point
-  quad = p.quad
-  rect = p.rect
-  square = p.square
-  triangle = p.triangle
+  bindVariables(p)
 
   #random
   random = p.random
