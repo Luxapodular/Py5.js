@@ -1,49 +1,47 @@
 import builtins
 
-def updateVariables(p):
-  global mouseX, mouseY, pMouseX, pMouseY, winMouseX, winMouseY, pwinMouseX, pwinMouseY, mouseButton, mouseIsPressed, keyIsPressed, key, keyCode
 
-  # Mouse Variables
-#  movedX = p.movedX
-#  movedY = p.movedY
-  mouseX = p.mouseX
-  mouseY = p.mouseY
-  pmouseX = p.pmouseX
-  pmouseY = p.pmouseY
-  winMouseX = p.winMouseX
-  winMouseY = p.winMouseY
-  pwinMouseX = p.pwinMouseX
-  pwinMouseY = p.pwinMouseY
-  mouseButton = p.mouseButton
-  mouseIsPressed = p.mouseIsPressed
+#####################################
+######## Global Attributes ##########
+#####################################
 
-  # Key Variables
-  keyIsPressed = p.keyIsPressed
-  key = p.key
-  keyCode = p.keyCode
+__mouseAttrs = ['mouseX', 'mouseY', 'pmouseX', 'pmouseY', 'winMouseX', 'winMouseY', 'pwinMouseX', 'pwinMouseY', 'mouseIsPressed']
+__keyAttrs = ['keyIsPressed', 'key', 'keyCode']
+__sketchAttrs = ['width', 'height']
 
-# Our wrapped draw loop and events. Updates all p5 variables and calls draw if defined.
+__globalAttrs = __mouseAttrs + __keyAttrs + __sketchAttrs
+
+def updateGlobalVariables(p):
+  for variable in __globalAttrs:
+    setattr(builtins, variable, getattr(p, variable))
+
+    
+######################################
+########## Event Functions ###########
+######################################
+
+# Our wrapped p5 events.
 def __preload(p):
   try:
-    updateVariables(p)
+    updateGlobalVariables(p)
     preload()
   except: 
-    updateVariables(p)
+    updateGlobalVariables(p)
     
 def __setup(p):
   try:
-    updateVariables(p)
+    updateGlobalVariables(p)
     setup()
   except:
-    updateVariables(p)
+    updateGlobalVariables(p)
 
 def __draw(p):
   try:
-    updateVariables(p)
+    updateGlobalVariables(p)
     draw()
   except:
-    updateVariables(p)
-
+    updateGlobalVariables(p)
+    
 def __mouseMoved(p):
   try:
     mouseMoved()
@@ -128,7 +126,7 @@ def __deviceShaken(p):
     deviceShaken()
   except:
     pass
-  
+
 # Events - Touch
 def __touchStarted(p):
   try:
@@ -154,78 +152,57 @@ def __windowResized(p):
     windowResized()
   except:
     pass
-
   
+__eventFunctions = ['mouseMoved', 'mouseDragged', 'mousePressed', 'mouseReleased', 'mouseClicked', 'doubleClicked', 'mouseWheel', 'keyPressed', 'keyReleased', 'keyTyped', 'keyIsDown', 'deviceMoved', 'deviceTurned', 'deviceShaken', 'touchStarted', 'touchMoved', 'touchEnded', 'windowResized']
+  
+def bindEventFunctions(p):
+  for event in __eventFunctions:
+    dunderVar = '__' + event
+    p[event] = lambda e: globals()[dunderVar](p)
+    
+######################################
+############ API Elements ############
+######################################
   
 __primitives2D = ['arc', 'ellipse', 'circle', 'line', 'point', 'quad', 'rect', 'square', 'triangle']
-__attributes = ['ellipseMode', 'noSmooth', 'rectMode', 'smooth', 'strokeCap', 'strokeJoin', 'strokeWeight']
-__curves = ['bezier', 'bezierDetail', 'bezierPoint', 'bezierTangent', 'curve', 'curveDetail', 'curveTightness', 'curvePoint', 'curveTangent']
-__vertex = ['beginContour', 'beginShape', 'bezierVertex', 'curveVertex', 'endContour', 'endShape', 'quadraticVertex', 'vertex']
-__primitives3D = ['plane', 'box', 'sphere', 'cylinder', 'cone', 'ellipsoid', 'torus']
-__models3D = ['loadModel', 'model']
-__constants = ['HALF_PI', 'PI', 'QUARTER_PI', 'TAU', 'TWO_PI', 'DEGREES', 'RADIANS']
-__environment = ['print', 'frameCount', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
-__structure = ['remove', 'noLoop', 'loop', 'push', 'pop', 'redraw']
-__rendering = ['createCanvas', 'resizeCanvas', 'noCanvas', 'createGraphics', 'blendMode', 'setAttributes']
-__transform = ['applyMatrix', 'resetMatrix', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'shearX', 'shearY', 'translate']
-__dictionary = ['createStringDictionary', 'createNumberDictionary']
-__acceleration = ['deviceOrientation', 'accelerationX', 'accelerationY', 'accelerationZ', 'pAccelerationX', 'pAccelerationY', 'pAccelerationZ', 'rotationX', 'rotationY', 'rotationZ', 'pRotationX', 'pRotationY', 'pRotationY', 'pRotationZ', 'turnAxis', 'setMoveThreshold', 'setShakeThreshold']
-__touch = ['touches']
+__color = ['fill', 'stroke', 'background']
+__attributes = ['ellipseMode', 'noSmooth', 'rectMode', 'smooth', 'strokeCap', 'strokeJoin', 'strokeWeight', 'noStroke']
+__modes = ['CORNER', 'CENTER', 'RADIUS', 'CORNERS']
+#__curves = ['bezier', 'bezierDetail', 'bezierPoint', 'bezierTangent', 'curve', 'curveDetail', 'curveTightness', 'curvePoint', 'curveTangent']
+#__vertex = ['beginContour', 'beginShape', 'bezierVertex', 'curveVertex', 'endContour', 'endShape', 'quadraticVertex', 'vertex']
+#__primitives3D = ['plane', 'box', 'sphere', 'cylinder', 'cone', 'ellipsoid', 'torus']
+#__models3D = ['loadModel', 'model']
+#__constants = ['HALF_PI', 'PI', 'QUARTER_PI', 'TAU', 'TWO_PI', 'DEGREES', 'RADIANS']
+#__environment = ['frameCount', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
+#__structure = ['remove', 'noLoop', 'loop', 'push', 'pop', 'redraw']
+#__rendering = ['createCanvas', 'resizeCanvas', 'noCanvas', 'createGraphics', 'blendMode', 'setAttributes']
+#__transform = ['applyMatrix', 'resetMatrix', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'shearX', 'shearY', 'translate']
+#__dictionary = ['createStringDictionary', 'createNumberDictionary']
+#__acceleration = ['deviceOrientation', 'accelerationX', 'accelerationY', 'accelerationZ', 'pAccelerationX', 'pAccelerationY', 'pAccelerationZ', 'rotationX', 'rotationY', 'rotationZ', 'pRotationX', 'pRotationY', 'pRotationY', 'pRotationZ', 'turnAxis', 'setMoveThreshold', 'setShakeThreshold']
+#__touch = ['touches']
+#
+#__allAttributes = __primitives2D + __attributes + __curves + __vertex + __primitives3D + __models3D + __constants + __environment + __structure + __rendering + __transform  + __acceleration
 
-__allAttributes = __primitives2D + __attributes + __curves + __vertex + __primitives3D + __models3D + __constants + __environment + __structure + __rendering + __transform  + __acceleration
+__functionAttributes = __primitives2D + __color + __attributes + __modes
 
-def bindVariables(p):
-  for variable in __allAttributes:
+def bindAPIFunctions(p):
+  for variable in __functionAttributes:
     setattr(builtins, variable, getattr(p, variable))
-  
+    
 def sketch(p):
-  global createCanvas, background, fill, arc, ellipse, circle, line, point, quad, rect, square, triangle, random
+  global createCanvas, random
   
   # Setup Function
   p.setup = lambda: __setup(p)
   p.draw = lambda: __draw(p)
   p.preload = lambda: __preload(p)
-  
-  # Acceleration
-  p.deviceMoved = lambda e: __deviceMoved(p)
-  p.deviceTurned = lambda e: __deviceTurned(p)
-  p.deviceShaken = lambda e: __deviceShaken(p)
-  
-  # Mouse Events
-  p.mouseMoved = lambda e: __mouseMoved(p)
-  p.mouseDragged = lambda e: __mouseDragged(p)
-  p.mousePressed = lambda e: __mousePressed(p)
-  p.mouseReleased = lambda e: __mouseReleased(p)
-  p.mouseClicked = lambda e: __mouseClicked(p)
-  p.doubleClicked = lambda e: __doubleClicked(p)
-  p.mouseWheel = lambda e: __mouseWheel(p)
-
-  # Key Events
-  p.keyPressed = lambda e: __keyPressed(p)
-  p.keyReleased = lambda e: __keyReleased(p)
-  p.keyTyped = lambda e: __keyTyped(p)
-  p.keyIsDown = lambda e: __keyIsDown(p)
-  
-  # Touch Events
-  p.touchStarted = lambda e: __touchStarted(p)
-  p.touchMoved = lambda e: __touchMoved(p)
-  p.touchEnded = lambda e: __touchEnded(p)
-  
-  # Window
-  p.windowResized = lambda e: __windowResized(p)
-
 
   #Canvas
   createCanvas = p.createCanvas
-
-  # color
-  background = p.background
-  fill = p.fill
-
-  bindVariables(p)
-
-  #random
+  
+  # random
   random = p.random
 
-# create the p5 sketch and send to the p5Container div
-window._p5jsCanvas = p5.new(sketch, "p5Container")
+  bindEventFunctions(p)
+  bindAPIFunctions(p)
+  updateGlobalVariables(p)

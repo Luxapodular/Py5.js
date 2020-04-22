@@ -2,10 +2,9 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
     <script src="./pyodide/pyodide.js"></script>
-<!--    <script src="./lib/pyodide_dev.js"></script>-->
     <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
     
     <script>
@@ -35,7 +34,7 @@
     
   </head>
   <body>
-    
+    <div id="loading-screen">Loading...</div>
     <div className="header">
       <h1>Py5.js Demo by @lucapodular</h1>
       <button id="run-button" onClick="runCode()" disabled="true">Run Code</button>
@@ -57,7 +56,7 @@
             tabSize: 2,
           });
         
-          if (_defaultSketch) {
+          if (window._defaultSketch) {
             editor.session.insert({row:0, column:0}, _defaultSketch);
           }
       </script>
@@ -68,25 +67,29 @@
       // When loaded, display the run code button.
         
       languagePluginLoader.then(() => {
-          pyodide.runPython(`
+          document.getElementById("loading-screen").style.display = 'none';
+
+          let headerResponse = pyodide.runPython(`
             import io, code, sys
             from js import pyodide, p5, window, document
-
             document.getElementById('run-button').disabled = False;
-          `)
+          `);
+        
+          let loadCore = pyodide.runPython(_pyCore);
       });
       
+
     function runCode() {
-        let sketchCode = editor.getValue();
+      let sketchCode = editor.getValue();
 
-        let code = sketchCode + '\n' + _pyCore; 
-
-        if (window._p5jsCanvas) {
-          window._p5jsCanvas.canvas.remove();
-        }
-
-        pyodide.runPython(code);
+      let instancedCode = '\nwindow._p5jsCanvas = p5.new(sketch, "p5Container")'
+      
+      if (window._p5jsCanvas) {
+        window._p5jsCanvas.canvas.remove();
       }
+
+      pyodide.runPython(sketchCode + instancedCode);
+    }
     </script>
 
   </body>
