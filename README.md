@@ -24,4 +24,4 @@ This project is supported by:
 
 ### Supported By
 Py5.js was supported by The Clinic for Open Source Arts at the University of Denver
-
+![COSA Logo](https://github.com/Luxapodular/Py5.js/blob/master/.github/cosa_logo.png)
