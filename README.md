@@ -16,3 +16,7 @@ Utilizing Pyodide, we should be able to integrate several python data science to
 3. Serve the directory. I use the 'serve' project on npm. The python simple server seems to fail here.
 4. Open your browser to localhost:<port>. Where <port> is the port you've served to. 
 
+
+### Supported By
+Py5.js was supported by The Clinic for Open Source Arts at the University of Denver
+
