@@ -21,3 +21,7 @@ This project is supported by:
 
 [COSA (The Clinic for Open Source Arts)](https://www.du.edu/ahss/opensourcearts/) at the University of Denver College of Arts and Sciences
 
+
+### Supported By
+Py5.js was supported by The Clinic for Open Source Arts at the University of Denver
+
