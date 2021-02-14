@@ -1,21 +1,34 @@
-import builtins
+## core.py ##
+## Defines all api elements from p5.js and binds these attributes globally
+## making them accessible without the need to pull the values using the prefix p5.
 
+import builtins
 
 #####################################
 ######## Global Attributes ##########
 #####################################
 
-__mouseAttrs = ['mouseX', 'mouseY', 'pmouseX', 'pmouseY', 'winMouseX', 'winMouseY', 'pwinMouseX', 'pwinMouseY', 'mouseIsPressed']
-__keyAttrs = ['keyIsPressed', 'key', 'keyCode']
-__sketchAttrs = ['width', 'height']
+######## Environment #########
+__environmentAttrs = ['frameCount', 'deltaTime', 'focused', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'width', 'height']
 
-__globalAttrs = __mouseAttrs + __keyAttrs + __sketchAttrs
+######## Events ##########
+__accelerationAttrs = ['deviceOrientation', 'accelerationX', 'accelerationY', 'accelerationZ', 'pAccelerationX', 'pAccelerationY', 'pAccelerationZ', 'rotationX', 'rotationY', 'rotationZ', 'pRotationX', 'pRotationY', 'pRotationZ', 'turnAxis']
+__keyboardAttrs = ['keyIsPressed', 'key', 'keyCode']
+__mouseAttrs = ['movedX', 'movedY', 'mouseX', 'mouseY', 'pmouseX', 'pmouseY', 'winMouseX', 'winMouseY', 'pwinMouseX', 'pwinMouseY', 'mouseButton', 'mouseIsPressed']
+__touchAttrs = ['touches']
+
+__eventsAttrs = __mouseAttrs + __keyboardAttrs 
+#__accelerationAttrs + __keyboardAttrs + __mouseAttrs + __touchAttrs
+
+######## Image ###########
+__imageAttrs = ['pixels']
+
+__globalAttrs = __environmentAttrs + __eventsAttrs + __imageAttrs
 
 def updateGlobalVariables(p):
   for variable in __globalAttrs:
     setattr(builtins, variable, getattr(p, variable))
 
-    
 ######################################
 ########## Event Functions ###########
 ######################################
@@ -163,30 +176,108 @@ def bindEventFunctions(p):
 ######################################
 ############ API Elements ############
 ######################################
-  
-__primitives2D = ['arc', 'ellipse', 'circle', 'line', 'point', 'quad', 'rect', 'square', 'triangle']
-__color = ['fill', 'stroke', 'background']
-__attributes = ['ellipseMode', 'noSmooth', 'rectMode', 'smooth', 'strokeCap', 'strokeJoin', 'strokeWeight', 'noStroke']
-__modes = ['CORNER', 'CENTER', 'RADIUS', 'CORNERS']
-#__curves = ['bezier', 'bezierDetail', 'bezierPoint', 'bezierTangent', 'curve', 'curveDetail', 'curveTightness', 'curvePoint', 'curveTangent']
-#__vertex = ['beginContour', 'beginShape', 'bezierVertex', 'curveVertex', 'endContour', 'endShape', 'quadraticVertex', 'vertex']
-#__primitives3D = ['plane', 'box', 'sphere', 'cylinder', 'cone', 'ellipsoid', 'torus']
-#__models3D = ['loadModel', 'model']
-#__constants = ['HALF_PI', 'PI', 'QUARTER_PI', 'TAU', 'TWO_PI', 'DEGREES', 'RADIANS']
-#__environment = ['frameCount', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
-#__structure = ['remove', 'noLoop', 'loop', 'push', 'pop', 'redraw']
-#__rendering = ['createCanvas', 'resizeCanvas', 'noCanvas', 'createGraphics', 'blendMode', 'setAttributes']
-#__transform = ['applyMatrix', 'resetMatrix', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'shearX', 'shearY', 'translate']
-#__dictionary = ['createStringDictionary', 'createNumberDictionary']
-#__acceleration = ['deviceOrientation', 'accelerationX', 'accelerationY', 'accelerationZ', 'pAccelerationX', 'pAccelerationY', 'pAccelerationZ', 'rotationX', 'rotationY', 'rotationZ', 'pRotationX', 'pRotationY', 'pRotationY', 'pRotationZ', 'turnAxis', 'setMoveThreshold', 'setShakeThreshold']
-#__touch = ['touches']
-#
-#__allAttributes = __primitives2D + __attributes + __curves + __vertex + __primitives3D + __models3D + __constants + __environment + __structure + __rendering + __transform  + __acceleration
 
-__functionAttributes = __primitives2D + __color + __attributes + __modes
+############### Constants ############
+######## CONSTANTS #########
+
+__graphicsConstants = ['P2D', 'WEBGL']
+__environmentConstants = ['ARROW', 'CROSS', 'HAND', 'MOVE', 'TEXT', 'WAIT']
+__trigonometryConstants = ['HALF_PI', 'PI', 'QUARTER_PI', 'TAU', 'TWO_PI', 'DEGREES', 'RADIANS']
+__shapeConstants = ['CORNER', 'CORNERS', 'RADIUS', 'RIGHT', 'LEFT', 'CENTER', 'TOP', 'BOTTOM', 'BASELINE', 'POINTS', 'LINES', 'LINE_STRIP', 'LINE_LOOP', 'TRIANGLES', 'TRIANGLE_FAN', 'TRIANGLE_STRIP', 'QUADS', 'CLOSE', 'OPEN', 'CHORD', 'PIE', 'PROJECT', 'SQUARE', 'ROUND', 'BEVEL', 'MITER']
+__colorConstants = ['RGB', 'HSB', 'HSL']
+__DOMConstants = ['AUTO']
+__inputConstants = ['ALT', 'BACKSPACE', 'CONTROL', 'DELETE', 'CONTROL', 'DOWN_ARROW', 'ENTER', 'ESCAPE', 'LEFT_ARROW', 'OPTION', 'RETURN', 'RIGHT_ARROW', 'SHIFT', 'TAB', 'UP_ARROW']
+__renderingConstants = ['BLEND', 'REMOVE', 'ADD', 'DARKEST', 'LIGHTEST', 'DIFFERENCE', 'SUBTRACT', 'EXCLUSION', 'MULTIPLY', 'SCREEN', 'REPLACE', 'OVERLAY', 'HARD_LIGHT', 'SOFT_LIGHT', 'DODGE', 'BURN']
+__filterConstants = ['THRESHOLD', 'GRAY', 'OPAQUE', 'INVERT', 'POSTERIZE', 'DILATE', 'ERODE', 'BLUR']
+__typographyConstants = ['NORMAL', 'ITALIC', 'BOLD', 'BOLDITALIC']
+__verticesConstants = ['LINEAR', 'QUADRATIC', 'BEZIER', 'CURVE', 'STROKE', 'FILL', 'TEXTURE', 'IMMEDIATE']
+__webglConstants = ['IMAGE', 'NEAREST', 'REPEAT', 'CLAMP', 'MIRROR']
+__deviceConstants = ['LANDSCAPE', 'PORTRAIT']
+__defaultConstants = ['GRID', 'AXES']
+
+__allConstants = __graphicsConstants + __environmentConstants + __trigonometryConstants + __shapeConstants + __colorConstants + __DOMConstants + __inputConstants + __renderingConstants + __filterConstants + __typographyConstants + __verticesConstants + __webglConstants + __deviceConstants + __defaultConstants
+
+  
+############### Color ################ 
+__colorCreating = ['alpha', 'blue', 'brightness', 'color', 'green', 'hue', 'lerpColor', 'lightness', 'red', 'saturation'] 
+__colorSetting = ['background', 'clear', 'colorMode', 'fill', 'noFill', 'noStroke', 'stroke', 'erase', 'noErase']
+__colorFunctions = __colorCreating + __colorSetting
+
+############### Shape ################ 
+__shapePrimitives2d = ['arc', 'ellipse', 'circle', 'line', 'point', 'quad', 'rect', 'square', 'triangle']
+__shapeAttributes = ['ellipseMode', 'noSmooth', 'rectMode', 'smooth', 'strokeCap', 'strokeJoin', 'strokeWeight']
+__shapeCurves = ['bezier', 'bezierDetail', 'bezierPoint', 'bezierTangent', 'curve', 'curveDetail', 'curveTightness', 'curvePoint', 'curveTangent']
+__shapeVertex = ['beginContour', 'beginShape', 'bezierVertex', 'curveVertex', 'endContour', 'endShape', 'quadraticVertex', 'vertex']
+__shapePrimitives3d = ['plane', 'box', 'sphere', 'cylinder', 'cone', 'ellipsoid', 'torus']
+__shapeModels3d = ['loadModel', 'model']
+__shapeFunctions = __shapePrimitives2d + __shapeAttributes + __shapeCurves + __shapeVertex + __shapePrimitives3d + __shapeModels3d
+
+########### Environment ############## 
+__environmentFunctions = ['print', 'frameCount', 'deltaTime', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'windowResized', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
+
+########### Structure ################ 
+__structureFunctions = ['remove', 'noLoop', 'loop', 'push', 'pop', 'redraw']
+
+############### DOM ##################
+__DOMFunctions = ['select', 'selectAll', 'removeElements', 'createDiv', 'createP', 'createSpan', 'createImg', 'createA', 'createSlider', 'createButton', 'createCheckbox', 'createSelect', 'createRadio', 'createColorPicker', 'createInput', 'createFileInput', 'createVideo', 'createAudio', 'VIDEO', 'AUDIO', 'createCapture', 'createElement'] 
+
+########### Rendering ################ 
+__renderingFunctions = ['createCanvas', 'resizeCanvas', 'noCanvas', 'createGraphics', 'blendMode', 'setAttributes']
+
+########### Transform ################ 
+__transformFunctions = ['applyMatrix', 'resetMatrix', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'shearX', 'shearY', 'translate']
+
+############# Data ###################
+__dataLocalStorage = ['storeItem', 'getItem', 'clearStorage', 'removeItem']
+__dataArray = ['append', 'arrayCopy', 'concat', 'reverse', 'shorten', 'shuffle', 'sort', 'splice', 'subset']
+__dataConversion = ['byte', 'char', 'unchar', 'hex', 'unhex']
+__dataString = ['join', 'match', 'matchAll', 'nf', 'nfc', 'nfp', 'nfs', 'split', 'splitTokens', 'trim']
+__dataFunctions = __dataLocalStorage + __dataArray + __dataConversion + __dataString
+
+############# Events ###################
+__eventsAcceleration = ['setMoveThreshold', 'setShakeThreshold']
+__eventsKeyboard = ['keyPressed', 'keyReleased', 'keyTyped', 'keyIsDown']
+__eventsMouse = ['requestPointerLock', 'exitPointerLock']
+__eventsFunctions = __eventsAcceleration + __eventsKeyboard + __eventsMouse
+
+############# Image ###################
+__imageStandard = ['createImage', 'saveCanvas', 'saveFrames']
+__imageLoading = ['loadImage', 'image', 'tint', 'noTint', 'imageMode']
+__imagePixels = ['blend', 'copy', 'filter', 'get', 'loadPixels', 'set', 'updatePixels']
+__imageFunctions = __imageStandard + __imageLoading + __imagePixels
+
+############# IO ###################
+__ioInput = ['loadJSON', 'loadStrings', 'loadTable', 'loadXML', 'loadBytes', 'httpGet', 'httpPost', 'httpDo']
+__ioOutput = ['createWriter', 'save', 'saveJSON', 'saveStrings', 'saveTable']
+__ioTime = ['day', 'hour', 'minute', 'millis', 'month', 'second', 'year']
+__ioFunctions = __ioInput +  __ioOutput + __ioTime
+
+############# Math ###################
+__mathCalculation = ['abs', 'ceil', 'constrain', 'dist', 'exp', 'floor', 'lerp', 'log', 'mag', 'map' , 'max', 'min', 'norm', 'pow', 'round', 'sq', 'sqrt', 'fract']
+__mathVector = ['createVector']
+__mathNoise = ['noise', 'noiseDetail', 'noiseSeed']
+__mathRandom = ['randomSeed', 'random', 'randomGaussian']
+__mathTrigonometry = ['acos', 'asin', 'atan', 'atan2', 'cos', 'sin', 'tan', 'degrees', 'radians', 'angleMode']
+__mathFunctions = __mathCalculation + __mathVector + __mathNoise + __mathRandom + __mathTrigonometry
+
+############# Typography ###################
+__typographyAttributes = ['textAlign', 'textLeading', 'textSize', 'textStyle', 'textWidth', 'textAscent', 'textDescent']
+__typographyLoading = ['loadFont', 'text', 'textFont']
+__typographyFunctions = __typographyAttributes + __typographyLoading
+
+############# Lights, Camera ###################
+__camInteraction = ['orbitControl', 'debugMode', 'noDebugMode']
+__camLights = ['ambientLight', 'specularColor', 'directionalLight', 'pointLight', 'lights', 'lightFalloff', 'spotLight', 'noLights']
+__camMaterial = ['loadShader', 'createShader', 'shader', 'resetShader', 'normalMaterial', 'texture', 'textureMode', 'textureWrap', 'ambientMaterial', 'emissiveMaterial', 'specularMaterial', 'shininess']
+__camCamera = ['camera', 'perspective', 'ortho', 'frustum', 'createCamera']
+__camFunctions = __camInteraction + __camLights + __camMaterial + __camCamera
+
+__apiElements = __colorFunctions + __shapeFunctions + __environmentFunctions + __structureFunctions + __DOMFunctions + __renderingFunctions + __transformFunctions + __dataFunctions + __eventsFunctions + __imageFunctions + __ioFunctions + __mathFunctions + __typographyFunctions + __camFunctions
+
+__allAttributes = __allConstants + __apiElements
 
 def bindAPIFunctions(p):
-  for variable in __functionAttributes:
+  for variable in __allAttributes:
     setattr(builtins, variable, getattr(p, variable))
     
 def sketch(p):
@@ -197,12 +288,14 @@ def sketch(p):
   p.draw = lambda: __draw(p)
   p.preload = lambda: __preload(p)
 
-  #Canvas
-  createCanvas = p.createCanvas
+  # #Canvas
+  # createCanvas = p.createCanvas
   
-  # random
-  random = p.random
+  # # random
+  # random = p.random
 
   bindEventFunctions(p)
   bindAPIFunctions(p)
   updateGlobalVariables(p)
+
+  #TODO: isLooping(), disableFriendlyErrors, p5, drawingContext, 
