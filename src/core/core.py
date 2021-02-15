@@ -17,8 +17,7 @@ __keyboardAttrs = ['keyIsPressed', 'key', 'keyCode']
 __mouseAttrs = ['movedX', 'movedY', 'mouseX', 'mouseY', 'pmouseX', 'pmouseY', 'winMouseX', 'winMouseY', 'pwinMouseX', 'pwinMouseY', 'mouseButton', 'mouseIsPressed']
 __touchAttrs = ['touches']
 
-__eventsAttrs = __mouseAttrs + __keyboardAttrs 
-#__accelerationAttrs + __keyboardAttrs + __mouseAttrs + __touchAttrs
+__eventsAttrs = __mouseAttrs + __keyboardAttrs + __accelerationAttrs + __touchAttrs
 
 ######## Image ###########
 __imageAttrs = ['pixels']
@@ -213,7 +212,7 @@ __shapeModels3d = ['loadModel', 'model']
 __shapeFunctions = __shapePrimitives2d + __shapeAttributes + __shapeCurves + __shapeVertex + __shapePrimitives3d + __shapeModels3d
 
 ########### Environment ############## 
-__environmentFunctions = ['print', 'frameCount', 'deltaTime', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'windowResized', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
+__environmentFunctions = ['print', 'frameCount', 'deltaTime', 'focused', 'cursor', 'frameRate', 'noCursor', 'displayWidth', 'displayHeight', 'windowWidth', 'windowHeight', 'width', 'height', 'fullscreen', 'pixelDensity', 'displayDensity', 'getURL', 'getURLPath', 'getURLParams']
 
 ########### Structure ################ 
 __structureFunctions = ['remove', 'noLoop', 'loop', 'push', 'pop', 'redraw']
@@ -236,7 +235,7 @@ __dataFunctions = __dataLocalStorage + __dataArray + __dataConversion + __dataSt
 
 ############# Events ###################
 __eventsAcceleration = ['setMoveThreshold', 'setShakeThreshold']
-__eventsKeyboard = ['keyPressed', 'keyReleased', 'keyTyped', 'keyIsDown']
+__eventsKeyboard = ['keyIsDown']
 __eventsMouse = ['requestPointerLock', 'exitPointerLock']
 __eventsFunctions = __eventsAcceleration + __eventsKeyboard + __eventsMouse
 
@@ -283,16 +282,9 @@ def bindAPIFunctions(p):
 def sketch(p):
   global createCanvas, random
   
-  # Setup Function
   p.setup = lambda: __setup(p)
   p.draw = lambda: __draw(p)
   p.preload = lambda: __preload(p)
-
-  # #Canvas
-  # createCanvas = p.createCanvas
-  
-  # # random
-  # random = p.random
 
   bindEventFunctions(p)
   bindAPIFunctions(p)

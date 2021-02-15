@@ -72,8 +72,9 @@
           let headerResponse = pyodide.runPython(`
             import io, code, sys
             from js import pyodide, p5, window, document
-            document.getElementById('run-button').disabled = False;
           `);
+
+          document.getElementById('run-button').disabled = false;
         
           let loadCore = pyodide.runPython(_pyCore);
       });
