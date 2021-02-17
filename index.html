@@ -86,7 +86,7 @@
       let instancedCode = '\nwindow._p5jsCanvas = p5.new(sketch, "p5Container")'
       
       if (window._p5jsCanvas) {
-        window._p5jsCanvas.canvas.remove();
+        window._p5jsCanvas.remove && window._p5jsCanvas.remove();
       }
 
       pyodide.runPython(sketchCode + instancedCode);

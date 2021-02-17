@@ -290,4 +290,4 @@ def sketch(p):
   bindAPIFunctions(p)
   updateGlobalVariables(p)
 
-  #TODO: isLooping(), disableFriendlyErrors, p5, drawingContext, 
+  #TODO: isLooping(), disableFriendlyErrors, p5, drawingContext, map
