@@ -4,20 +4,9 @@
     <meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
-    <script src="./pyodide/pyodide.js"></script>
+    <script src="./src/py5.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
-    
-    <script>
-    // Loads the python bindings into the page for later use.
-     fileUrl = './src/core/core.py'
-          fetch(fileUrl)
-           .then( r => r.text() )
-           .then( t => { 
-              window._pyCore = t; 
-              console.log("%c core.py loaded", 'color: green');
-          });
-    </script>
-    
+  
     <script>
     // Loads the default script for the code editor
      fileUrl = './src/interface/defaultSketch.py'
@@ -25,7 +14,7 @@
            .then( r => r.text() )
            .then( t => { 
               window._defaultSketch = t; 
-              console.log("%c defaultSketch.py loaded", 'color: green');
+              console.log("%c Loaded defaultSketch.py ", 'color: green');
               if (window._textEditor) {
                 window._textEditor.session.insert({row:0, column:0}, _defaultSketch);
               }
@@ -37,7 +26,7 @@
     <div id="loading-screen">Loading...</div>
     <div className="header">
       <h1>Py5.js Demo by @lucapodular</h1>
-      <button id="run-button" onClick="runCode()" disabled="true">Run Code</button>
+      <button id="run-button" disabled="true">Run Code</button>
     </div>
     
     <div className="editor-containter">
@@ -60,38 +49,18 @@
             editor.session.insert({row:0, column:0}, _defaultSketch);
           }
       </script>
+
+      <script>
+        let py5 = new Py5({
+          onReady: () => {
+            document.getElementById('run-button').disabled = false;
+            document.getElementById('run-button').onclick = () => {
+              py5.runSketch(editor.getValue(), 'p5Container');
+            }
+            document.getElementById("loading-screen").style.display = 'none';
+          }
+        });
+      </script>
     </div>
-    
-    <script>
-      // Initialize Pyodide, import document, py, window, into python's scope.
-      // When loaded, display the run code button.
-        
-      languagePluginLoader.then(() => {
-          document.getElementById("loading-screen").style.display = 'none';
-
-          let headerResponse = pyodide.runPython(`
-            import io, code, sys
-            from js import pyodide, p5, window, document
-          `);
-
-          document.getElementById('run-button').disabled = false;
-        
-          let loadCore = pyodide.runPython(_pyCore);
-      });
-      
-
-    function runCode() {
-      let sketchCode = editor.getValue();
-
-      let instancedCode = '\nwindow._p5jsCanvas = p5.new(sketch, "p5Container")'
-      
-      if (window._p5jsCanvas) {
-        window._p5jsCanvas.remove && window._p5jsCanvas.remove();
-      }
-
-      pyodide.runPython(sketchCode + instancedCode);
-    }
-    </script>
-
   </body>
 </html>
