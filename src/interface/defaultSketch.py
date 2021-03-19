@@ -1,6 +1,7 @@
 def setup ():
-    createCanvas(400, 400)
+  createCanvas(400, 400)
     
 def draw ():
-    fill(255, 0, 0)
-    ellipse(200, 200, 100)
+  background(220)
+  fill(255, 0, 0)
+  ellipse(200, 200, 100)
